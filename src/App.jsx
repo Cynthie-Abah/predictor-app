@@ -15,6 +15,7 @@ import Label from "./ui/Label";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { cn } from "./lib/utils";
+import toast, { Toaster } from "react-hot-toast";
 
 const academicPerformanceData = [
   { 
@@ -120,28 +121,28 @@ const personalInfoData = [
   },
 ];
 
-const assessmentFactors = [
-  { 
-    factor: "Academic Performance", 
-    percentage: "40%",
-    name: 'academic_performance',
-  },
-  { 
-    factor: "Attendance Patterns", 
-    percentage: "25%",
-    name: 'attendance_patterns'
-  },
-  { 
-    factor: "Socioeconomic Factors", 
-    percentage: "20%",
-    name: 'socioeconomic_factors'
-  },
-  { 
-    factor: "School Engagement", 
-    percentage: "15%",
-    name: 'school_engagement'
-  },
-];
+// const assessmentFactors = [
+//   { 
+//     factor: "Academic Performance", 
+//     percentage: "40%",
+//     name: 'academic_performance',
+//   },
+//   { 
+//     factor: "Attendance Patterns", 
+//     percentage: "25%",
+//     name: 'attendance_patterns'
+//   },
+//   { 
+//     factor: "Socioeconomic Factors", 
+//     percentage: "20%",
+//     name: 'socioeconomic_factors'
+//   },
+//   { 
+//     factor: "School Engagement", 
+//     percentage: "15%",
+//     name: 'school_engagement'
+//   },
+// ];
 
 // {
 //   "absences": 0, --accounted_for
@@ -178,16 +179,67 @@ export default function App() {
       const res = await req.json();
       console.log(res);
       setAssessment(res);
+      toast.success('Assessment complete!')
       return res;
 
     } catch (error) {
       console.error(error)
+      toast.error('Failed to generate assessment!')
       throw error
     } 
   }
 
   return (
     <div className="bg-white w-screen min-h-screen border-[20px] border-white ">
+     <Toaster 
+      position="top-right"
+      toastOptions={{
+        duration: 4000,
+        style: {
+          fontSize: '0.875rem',
+          fontWeight: '600',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          padding: '16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        },
+
+        // ✅ Success style
+        success: {
+          iconTheme: {
+            primary: '#34A400',
+            secondary: '#fff',
+          },
+          style: {
+            background: '#EAF7E6',
+            color: '#1A661A',
+            borderLeft: '6px solid #34A400',
+          },
+        },
+
+        // ⚠️ Error / High Risk style
+        error: {
+          iconTheme: {
+            primary: '#FD0000BF',
+            secondary: '#fff',
+          },
+          style: {
+            background: '#FFE6E6',
+            color: '#B20000',
+            borderLeft: '6px solid #FD0000BF',
+          },
+        },
+
+        // ℹ️ Default / Info style
+        style: {
+          background: '#F4F4F5',
+          color: '#18181B',
+          borderLeft: '6px solid #3B82F6',
+        },
+      }}
+    />
 
       <div className="relative">
         <img
