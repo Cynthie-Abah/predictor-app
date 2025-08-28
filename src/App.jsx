@@ -166,9 +166,10 @@ export default function App() {
   const isLowRisk =  assessment?.probability * 100 < 50
 
   const onSubmit = async (data) => {
-     console.log(data);
+     console.log(typeof data.absences);
     try {
-      const req = await fetch('https://hackathon-ge82.onrender.com/predict', {
+      const req = await fetch(`https://hackathon-ge82.onrender.com/predict`, {
+      // const req = await fetch(`${process.env.REACT_APP_API_BASE_URL}/predict`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -176,6 +177,11 @@ export default function App() {
         body: JSON.stringify(data)
       })
       const res = await req.json();
+      if(!req.ok)
+      {
+        throw new Error(res?.message || 'Failed to generate assessment');
+      }
+        
       console.log(res);
       setAssessment(res);
       toast.success('Assessment complete!')
@@ -229,14 +235,7 @@ export default function App() {
             color: '#B20000',
             borderLeft: '6px solid #FD0000BF',
           },
-        },
-
-        // ℹ️ Default / Info style
-        style: {
-          background: '#F4F4F5',
-          color: '#18181B',
-          borderLeft: '6px solid #3B82F6',
-        },
+        }
       }}
     />
 
@@ -291,8 +290,9 @@ export default function App() {
                       {item.label}
                     </Label>
                     <Input
+                    {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                     disabled={isSubmitting}
-                      {...register(item.name)}
+                      {...register(item.name, { valueAsNumber: typeof item.value === 'number' })}
                       id={item.label}
                       placeholder={item.value}
                       className="h-11 bg-white  rounded-[4.33px] border-[0.43px] border-[#00000070]"
@@ -318,8 +318,9 @@ export default function App() {
                       {item.label}
                     </Label>
                     <Input
+                    {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                     disabled={isSubmitting}
-                      {...register(item.name)}
+                      {...register(item.name,  { valueAsNumber: typeof item.value === 'number' })}
                       id={item.label}
                       placeholder={item.value}
                       className="h-11 bg-white rounded-[4.33px] border-[0.43px] border-[#00000070]"
@@ -346,8 +347,9 @@ export default function App() {
                           {item.label}
                         </Label>
                         <Input
+                        {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                         disabled={isSubmitting}
-                        {...register(item.name)}
+                        {...register(item.name,  { valueAsNumber: typeof item.value === 'number' })}
                         id={item.label}
                           placeholder={item.value}
                           className="h-11 bg-white rounded-[4.33px] border-[0.43px] border-[#00000070]"
@@ -363,6 +365,7 @@ export default function App() {
                         {item.label}
                       </Label>
                       <Input
+                      {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                       disabled={isSubmitting}
                       id={item.label}
                         placeholder={item.value}
@@ -390,8 +393,9 @@ export default function App() {
                           {item.label}
                         </Label>
                         <Input
+                        {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                         disabled={isSubmitting}
-                          {...register(item.name)}
+                          {...register(item.name,  { valueAsNumber: typeof item.value === 'number' })}
                           placeholder={item.value}
                           id={item.label}
                           className="h-11 bg-white rounded-[4.33px] border-[0.43px] border-[#00000070]"
@@ -407,8 +411,9 @@ export default function App() {
                         {item.label}
                       </Label>
                       <Input
+                      {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                       disabled={isSubmitting}
-                        {...register(item.name)}
+                        {...register(item.name,  { valueAsNumber: typeof item.value === 'number' })}
                         id={item.value}
                         placeholder={item.value}
                         className="h-11 bg-white rounded-[4.33px] border-[0.43px] border-[#00000070]"
@@ -450,6 +455,7 @@ export default function App() {
                       {item.label}
                     </Label>
                     <Input
+                    {...typeof item.value === 'number' && { type: 'number', step: 'any', min: 0 }}
                     disabled={isSubmitting}
                       {...register(item.name)}
                       id={item.label}
@@ -534,7 +540,7 @@ Download
                         Risk Probability
                       </span>
                       <span className="[font-family:'Inter',Helvetica] font-medium text-black text-[14px] leading-[30px]">
-                        {(assessment.probability * 100) + '%'}
+                        {Math.round(assessment.probability * 100) + '%'}
                       </span>
                     </div>
                 </div>
