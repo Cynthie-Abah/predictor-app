@@ -168,8 +168,8 @@ export default function App() {
   const onSubmit = async (data) => {
      console.log(typeof data.absences);
     try {
-      const req = await fetch(`https://hackathon-ge82.onrender.com/predict`, {
-      // const req = await fetch(`${process.env.REACT_APP_API_BASE_URL}/predict`, {
+      // const req = await fetch(`https://hackathon-ge82.onrender.com/predict`, {
+      const req = await fetch(`${import.meta.env.VITE_API_BASE_URL}/predict`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
