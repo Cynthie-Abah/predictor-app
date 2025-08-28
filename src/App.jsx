@@ -6,7 +6,6 @@ import {
   HomeIcon,
   Loader,
   ShieldAlert,
-  SirenIcon,
   TrendingUpIcon,
   UserIcon,
 } from "lucide-react";
@@ -164,7 +163,7 @@ export default function App() {
 //   probability: 0.02,
 //   risk_score: 0
 // });
-  const isLowRisk = assessment?.advise?.toLowerCase().includes('low risk');
+  const isLowRisk =  assessment?.probability * 100 < 50
 
   const onSubmit = async (data) => {
      console.log(data);
